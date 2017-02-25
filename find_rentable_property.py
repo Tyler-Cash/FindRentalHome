@@ -41,7 +41,8 @@ def get_locations_from_realestatecomau(pets_allowed):
             total_results = soup.find("div", {"class": "resultsInfo"})
             total_results = total_results.encode("utf-8")
             total_results = total_results.decode("utf-8")
-            total_pages = int(re.findall("\d{3,}", total_results)[0])
+            total_pages = re.findall("\d{1,}", total_results)
+            total_pages = int(total_pages[len(total_pages) - 1])
             if total_pages % 20 is not 0:
                 total_pages = int(total_pages / 20 + 1)
             else:
