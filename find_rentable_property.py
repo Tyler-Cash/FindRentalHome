@@ -107,11 +107,41 @@ def time_taken_transit(origin, destination, time):
 
 def find_nearest_house():
     # Pull houses from rent site
-    # loop through houses
-        # Get individual house placeID
-        # compute distance from work and school
-    #output property closest to work and school
+    print("pulling all houses")
+    rental_properties = get_locations_from_realestatecomau(True)
 
+    # loop through houses
+    print("Calculating distance between properties and school/work")
+
+    for property in rental_properties:
+        # Get individual house placeID
+        house = get_place_id(property.address)
+
+        if house is None:
+            continue
+
+        # compute distance from rental property to work
+        property.distance_to_work = time_taken_transit(house, WORK, 1488146400)
+        # compute distance from rental property to school
+        property.distance_to_school = time_taken_transit(house, SCHOOL, 1488146400)
+
+    # output property closest to school
+    print("___________________________________________________________________\nOutput closest to school:\n")
+    closest_to_school = sorted(rental_properties, key=lambda x: x.distance_to_school)
+    for property in closest_to_school:
+        print("________________\naddress: " + property.address + "\ncost p/w: " + str(
+            property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
+            property.distance_to_school / 60) + " minutes\nTime to work:" + str(
+            property.distance_to_work / 60) + " minutes")
+
+    # output property closest to work
+    print("___________________________________________________________________\nOutput closest to work:\n")
+    closest_to_school = sorted(rental_properties, key=lambda x: x.distance_to_work)
+    for property in closest_to_school:
+        print("________________\naddress: " + property.address + "\ncost p/w: " + str(
+            property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
+            property.distance_to_school / 60) + " minutes\nTime to work:" + str(
+            property.distance_to_work / 60) + " minutes")
 
 
 if __name__ == "__main__":
