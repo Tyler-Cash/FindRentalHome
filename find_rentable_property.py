@@ -27,7 +27,7 @@ def get_locations_from_realestatecomau(pets_allowed):
     # Total pages is + 1 since iterator starts at 1, not 0
     while page_number < total_pages + 1:
         # Acquires page to be scraped
-        property_search = "http://www.realestate.com.au/rent/property-unitblock-villa-townhouse-unit+apartment-house-between-0-" + str(
+        property_search = "http://www.realestate.com.au/rent/between-0-" + str(
             PRICE_LIMIT_PER_WEEK) + "-in-nsw/list-" + str(page_number) + "?activeSort=price-asc"
         if pets_allowed:
             property_search += "&misc=pets-allowed"
