@@ -53,7 +53,7 @@ def get_locations_from_realestatecomau(pets_allowed):
         for house in available_houses:
             url = "http://www.realestate.com.au" + house.find("a", {"class": "detailsButton"}).get("href")
 
-            address = house.find("a", {"rel": "listingName"}).contents[0]
+            address = str(house.find("a", {"rel": "listingName"}).contents[0])
 
             cost_per_week = house.find("p", {"class": "priceText"})
             if cost_per_week is not None:
