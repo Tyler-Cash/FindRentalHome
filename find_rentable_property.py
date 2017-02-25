@@ -47,7 +47,6 @@ def get_locations_from_realestatecomau(pets_allowed):
             else:
                 total_pages /= 20
 
-
         # Scrapes each house info section
         available_houses = soup.find_all("article", {"class": "resultBody"})
         # Scrapes all info for each house
@@ -70,8 +69,8 @@ def get_locations_from_realestatecomau(pets_allowed):
 
             extracted_house = create_house(address, cost_per_week, url)
             all_houses.append(extracted_house)
-            print("________________\nhouse number: " + str(len(all_houses)) + "\naddress: " + address + "\ncost p/w: " + str(cost_per_week) + "\n url: " + url)
-
+            print("________________\nhouse number: " + str(
+                len(all_houses)) + "\naddress: " + address + "\ncost p/w: " + str(cost_per_week) + "\n url: " + url)
 
         # Sleeps for 5 seconds after requesting to reduce load
         time.sleep(1)
@@ -82,6 +81,8 @@ def get_locations_from_realestatecomau(pets_allowed):
 
 '''Given a valid address_name this method finds the location's place_id
 '''
+
+
 def get_place_id(address_name):
     # Convert address_name into a placeID. No error checking, assuming address_name corresponds with a google placeID
     address_name = urllib.parse.quote(address_name)
