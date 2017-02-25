@@ -93,6 +93,13 @@ def get_place_id(address_name):
     return place_id
 
 
+def time_taken_transit(origin, destination, time):
+    response = requests.get(
+        "https://maps.googleapis.com/maps/api/directions/json?&mode=transit&arrival_time=" +
+        str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + GMAPS_PASSWORD)
+    response = json.loads(response.text)
+    return response['routes'][0]['legs'][0]['duration']['value']
+
 
 def find_nearest_house():
     # Pull houses from rent site
