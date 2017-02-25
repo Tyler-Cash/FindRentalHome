@@ -28,7 +28,7 @@ def get_locations_from_realestatecomau(pets_allowed):
     while page_number < total_pages + 1:
         # Acquires page to be scraped
         property_search = "http://www.realestate.com.au/rent/between-0-" + str(
-            PRICE_LIMIT_PER_WEEK) + "-in-nsw/list-" + str(page_number) + "?activeSort=price-asc"
+            PRICE_LIMIT_PER_WEEK) + "-in-blacktown%2c+nsw+2148%3b+parramatta+-+greater+region%2c+nsw%3b+newtown%2c+nsw+2042%3b+chullora%2c+nsw+2190%3b+wetherill+park%2c+nsw+2164%3b+baulkham+hills%2c+nsw+2153%3b+oxley+park%2c+nsw+2760%3b+mount+druitt%2c+nsw+2770%3b+penrith+-+greater+region%2c+nsw%3b+sydney+cbd%2c+nsw%3b+sydney%2c+nsw+2000%3b+strathfield%2c+nsw+2135%3b+surry+hills%2c+nsw+2010%3b+hurstville%2c+nsw+2220%3b+padstow%2c+nsw+2211%3b/list-" + str(page_number) + "?activeSort=price-asc"
         if pets_allowed:
             property_search += "&misc=pets-allowed"
 
