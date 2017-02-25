@@ -20,6 +20,13 @@ def get_locations():
 '''
 def get_place_id(address_name):
     # Convert address_name into a placeID. No error checking, assuming address_name corresponds with a google placeID
+    address_name = urllib.parse.quote(address_name)
+    response = requests.get(
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
+    response = json.loads(response.text)
+    # Extracts placeID of address_name from JSON response
+    place_id = response['results'][0]['place_id']
+    return place_id
 
 
 
