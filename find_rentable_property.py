@@ -103,7 +103,7 @@ def time_taken_transit(origin, destination, time):
         "https://maps.googleapis.com/maps/api/directions/json?&mode=transit&arrival_time=" +
         str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + GMAPS_PASSWORD)
     response = json.loads(response.text)
-    if response["status"] == "ZERO_RESULTS":
+    if response["status"] == "ZERO_RESULTS" or response["status"] == "NOT_FOUND":
         return 9999999
     return response["routes"][0]["legs"][0]["duration"]["value"]
 
