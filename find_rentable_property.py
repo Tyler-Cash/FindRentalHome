@@ -1,20 +1,16 @@
 import json
 import urllib
-
 import re
-
 import time
-from lxml import html
 import requests
 from house import House, create_house
 from bs4 import BeautifulSoup
-
 # API key for google maps
 from google_maps_password import GMAPS_PASSWORD
 
 # A per week price limit on rentable properties
 PRICE_LIMIT_PER_WEEK = 500
-
+#Location of work and school
 WORK = "Sydney NSW 2000"
 SCHOOL = "Sydney NSW 2109"
 
@@ -128,16 +124,15 @@ def find_nearest_house():
     # output property closest to school
     print("___________________________________________________________________\nOutput closest to school:\n")
     closest_to_school = sorted(rental_properties, key=lambda x: x.distance_to_school)
-    for property in closest_to_school:
-        print("________________\naddress: " + property.address + "\ncost p/w: " + str(
-            property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
-            property.distance_to_school / 60) + " minutes\nTime to work:" + str(
-            property.distance_to_work / 60) + " minutes")
+    print_all_properties(closest_to_school)
 
     # output property closest to work
     print("___________________________________________________________________\nOutput closest to work:\n")
-    closest_to_school = sorted(rental_properties, key=lambda x: x.distance_to_work)
-    for property in closest_to_school:
+    closest_to_work = sorted(rental_properties, key=lambda x: x.distance_to_work)
+    print_all_properties(closest_to_work)
+
+def print_all_properties(all_properties):
+    for property in all_properties:
         print("________________\naddress: " + property.address + "\ncost p/w: " + str(
             property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
             property.distance_to_school / 60) + " minutes\nTime to work:" + str(
