@@ -110,7 +110,7 @@ def time_taken_transit(origin, destination, time):
 
 def find_nearest_house():
     # Pull houses from rent site
-    print("pulling all houses")
+    print("Pulling all houses from http://realestate.com.au")
     rental_properties = get_locations_from_realestatecomau(True)
 
     # loop through houses
