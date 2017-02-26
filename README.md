@@ -8,7 +8,7 @@ To get this application working you will need a [Google Maps Directions API](htt
 
 ##Setting school and work locations
 
-Set the WORK and SCHOOL variables to a string that Google can recognize as a location. A good format for this is "<SUBURB> <STATE> <POSTCODE>".
+Set the WORK and SCHOOL variables to a string that Google can recognize as a location. A good format for this is "SUBURB STATE POSTCODE".
 
 ##Choosing to find closer to work, or school?
 
