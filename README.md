@@ -13,3 +13,7 @@ Set the WORK and SCHOOL variables to a string that Google can recognize as a loc
 ##Choosing to find closer to work, or school?
 
 To find properties closer to work you can set the WORK_PRIORITY variable closer to 1. By setting WORK_PRIORITY closer to 0 it will find properties closer to school.
+
+##Pet friendly
+
+Constant at top of program can be True if a pet friendly house is required, or false otherwise

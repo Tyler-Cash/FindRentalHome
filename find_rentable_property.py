@@ -12,6 +12,8 @@ from google_maps_password import GMAPS_PASSWORD
 
 # A per week price limit on rentable properties
 PRICE_LIMIT_PER_WEEK = 500
+# Constant that determines whether property will allow pets
+PET_ALLOWED = True
 # Location of work and school
 WORK = "Sydney NSW 2000"
 SCHOOL = "Sydney NSW 2109"
@@ -123,7 +125,7 @@ def compare_houses(house_one, house_two):
 def find_nearest_house():
     # Pull houses from rent site
     print("Pulling all houses from http://realestate.com.au")
-    rental_properties = get_locations_from_realestatecomau(True)
+    rental_properties = get_locations_from_realestatecomau(PET_ALLOWED)
 
     # loop through houses
     print("Calculating distance between properties and school/work")
