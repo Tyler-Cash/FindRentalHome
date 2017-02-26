@@ -92,8 +92,9 @@ def get_place_id(address_name):
         response = requests.get(
             "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
         response = json.loads(response.text)
+        # Returns None so that all of the properties already found can be sorted correctly.
         if response['status'] == "OVER_QUERY_LIMIT":
-            sys.exit(-1)
+            return None
 
     # Captures a place google can't find
     if response['status'] == "ZERO_RESULTS":
