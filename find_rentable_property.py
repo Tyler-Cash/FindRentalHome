@@ -151,12 +151,18 @@ def print_all_properties(all_properties):
         print("________________\naddress: " + property.address + "\ncost p/w: " + str(
             property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: ", end='')
 
+        invalid_property = False
+        if property.distance_to_school == 9999999:
+            invalid_property = True
+
         time_to_school_minutes = property.distance_to_school / 60
         time_to_school_hours = int(time_to_school_minutes / 60)
         time_to_school_minutes = int(time_to_school_minutes % 60)
 
-        if time_to_school_hours is not 0:
+        if time_to_school_hours is not 0 and not invalid_property:
             print(str(time_to_school_hours) + ":" + str(time_to_school_minutes).zfill(2)  + " hours")
+        elif invalid_property:
+            print("Couldn't find property")
         else:
             print(str(time_to_school_minutes).zfill(2)  + " minutes")
 
@@ -166,8 +172,10 @@ def print_all_properties(all_properties):
         time_to_work_hours = int(time_to_work_minutes / 60)
         time_to_work_minutes = int(time_to_work_minutes % 60)
 
-        if time_to_work_hours is not 0:
+        if time_to_work_hours is not 0 and not invalid_property:
             print(str(time_to_work_hours) + ":" + str(time_to_work_minutes).zfill(2)  + " hours")
+        elif invalid_property:
+            print("Couldn't find property")
         else:
             print(str(time_to_work_minutes).zfill(2)  + " minutes")
 
