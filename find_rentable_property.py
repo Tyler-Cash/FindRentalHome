@@ -2,6 +2,7 @@ import json
 import urllib
 import re
 import time
+import functools
 import requests
 import sys
 from house import House, create_house
@@ -14,6 +15,10 @@ PRICE_LIMIT_PER_WEEK = 500
 # Location of work and school
 WORK = "Sydney NSW 2000"
 SCHOOL = "Sydney NSW 2109"
+# WORK_PRIORITY prioritizes properties depending on how close they are to either, school or work.
+# 0 - - - - .5 - - - - 1
+#School    Even       Work
+WORK_PRIORITY = .8
 
 
 def get_locations_from_realestatecomau(pets_allowed):
@@ -108,6 +113,12 @@ def time_taken_transit(origin, destination, time):
     return response["routes"][0]["legs"][0]["duration"]["value"]
 
 
+def compare_houses(house_one, house_two):
+    # This returns whatever one is closer to work, whilst also ensuring it's reasonably close to school
+    return (house_one.distance_to_work / WORK_PRIORITY + house_one.distance_to_school) - \
+           (house_two.distance_to_work / WORK_PRIORITY + house_two.distance_to_school)
+
+
 def find_nearest_house():
     # Pull houses from rent site
     print("Pulling all houses from http://realestate.com.au")
@@ -130,13 +141,8 @@ def find_nearest_house():
 
     # output property closest to school
     print("___________________________________________________________________\nOutput closest to school:\n")
-    closest_to_school = sorted(rental_properties, key=lambda x: x.distance_to_school)
+    closest_to_school = sorted(rental_properties, key=functools.cmp_to_key(compare_houses))
     print_all_properties(closest_to_school)
-
-    # output property closest to work
-    print("___________________________________________________________________\nOutput closest to work:\n")
-    closest_to_work = sorted(rental_properties, key=lambda x: x.distance_to_work)
-    print_all_properties(closest_to_work)
 
 
 def print_all_properties(all_properties):
