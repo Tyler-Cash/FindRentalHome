@@ -3,6 +3,7 @@ import urllib
 import re
 import time
 import requests
+import sys
 from house import House, create_house
 from bs4 import BeautifulSoup
 # API key for google maps
@@ -81,11 +82,16 @@ def get_locations_from_realestatecomau(pets_allowed):
 def get_place_id(address_name):
     # Convert address_name into a placeID. No error checking, assuming address_name corresponds with a google placeID
     address_name = urllib.parse.quote(address_name)
-    response = requests.get(
-        "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
-    response = json.loads(response.text)
+    response = None
+    while response is None or response['status'] == "OVER_QUERY_LIMIT":
+        response = requests.get(
+            "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
+        response = json.loads(response.text)
+        if response['status'] == "OVER_QUERY_LIMIT":
+            sys.exit(-1)
+
     # Captures a place google can't find
-    if response['status'] == "ZERO_RESULTS" or response['status'] == "OVER_QUERY_LIMIT":
+    if response['status'] == "ZERO_RESULTS":
         return None
     # Extracts placeID of address_name from JSON response
     place_id = response['results'][0]['place_id']
