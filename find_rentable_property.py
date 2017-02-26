@@ -132,12 +132,14 @@ def find_nearest_house():
     closest_to_work = sorted(rental_properties, key=lambda x: x.distance_to_work)
     print_all_properties(closest_to_work)
 
+
 def print_all_properties(all_properties):
     for property in all_properties:
         print("________________\naddress: " + property.address + "\ncost p/w: " + str(
             property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
-            property.distance_to_school / 60) + " minutes\nTime to work:" + str(
-            property.distance_to_work / 60) + " minutes")
+            int(property.distance_to_school / 60)) + ":" + str((property.distance_to_school % 60) * 60)
+            + " minutes\nTime to work:" + str(int(property.distance_to_work / 60)) + ":" +
+            str((property.distance_to_work % 60) * 60))
 
 
 if __name__ == "__main__":
