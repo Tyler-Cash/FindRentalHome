@@ -1,6 +1,6 @@
 class House(object):
     address = ""
-    cost_per_week = 0
+    cost_per_week = "No price listed"
     url = ""
     distance_to_work = 9999999
     distance_to_school = 9999999
