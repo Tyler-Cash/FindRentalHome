@@ -68,7 +68,7 @@ def get_locations_from_realestatecomau(pets_allowed):
             extracted_house = create_house(address, cost_per_week, url)
             all_houses.append(extracted_house)
         # Sleeps for 5 seconds after requesting to reduce load
-        time.sleep(1)
+        time.sleep(.2)
         page_number += 1
 
     return all_houses
