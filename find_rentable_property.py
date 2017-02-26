@@ -60,9 +60,9 @@ def get_locations_from_realestatecomau(pets_allowed):
                 if len(cost_per_week) is 1:
                     cost_per_week = cost_per_week[0]
                 else:
-                    cost_per_week = 9999
+                    cost_per_week = "No price listed"
             else:
-                cost_per_week = 9999
+                cost_per_week = "No price listed"
 
             extracted_house = create_house(address, cost_per_week, url)
             all_houses.append(extracted_house)
@@ -97,7 +97,7 @@ def time_taken_transit(origin, destination, time):
         str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + GMAPS_PASSWORD)
     response = json.loads(response.text)
     if response["status"] == "ZERO_RESULTS":
-        return 9999999
+        return "No route found"
     return response["routes"][0]["legs"][0]["duration"]["value"]
 
 
