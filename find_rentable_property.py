@@ -84,7 +84,7 @@ def get_place_id(address_name):
         "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
     response = json.loads(response.text)
     # Captures a place google can't find
-    if response['status'] == "ZERO_RESULTS":
+    if response['status'] == "ZERO_RESULTS" or response['status'] == "OVER_QUERY_LIMIT":
         return None
     # Extracts placeID of address_name from JSON response
     place_id = response['results'][0]['place_id']
@@ -97,7 +97,7 @@ def time_taken_transit(origin, destination, time):
         str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + GMAPS_PASSWORD)
     response = json.loads(response.text)
     if response["status"] == "ZERO_RESULTS":
-        return "No route found"
+        return 9999999
     return response["routes"][0]["legs"][0]["duration"]["value"]
 
 
