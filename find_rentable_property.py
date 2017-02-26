@@ -142,10 +142,27 @@ def find_nearest_house():
 def print_all_properties(all_properties):
     for property in all_properties:
         print("________________\naddress: " + property.address + "\ncost p/w: " + str(
-            property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: " + str(
-            int(property.distance_to_school / 60)) + ":" + str((property.distance_to_school % 60) * 60)
-            + " minutes\nTime to work:" + str(int(property.distance_to_work / 60)) + ":" +
-            str((property.distance_to_work % 60) * 60))
+            property.cost_per_week) + "\nurl: " + property.url + "\nTime to school: ", end='')
+
+        time_to_school_minutes = property.distance_to_school / 60
+        time_to_school_hours = int(time_to_school_minutes / 60)
+        time_to_school_minutes = int(time_to_school_minutes % 60)
+
+        if time_to_school_hours is not 0:
+            print(str(time_to_school_hours) + ":" + str(time_to_school_minutes).zfill(2)  + " hours")
+        else:
+            print(str(time_to_school_minutes).zfill(2)  + " minutes")
+
+        print("Time to work: ", end='')
+
+        time_to_work_minutes = property.distance_to_work / 60
+        time_to_work_hours = int(time_to_work_minutes / 60)
+        time_to_work_minutes = int(time_to_work_minutes % 60)
+
+        if time_to_work_hours is not 0:
+            print(str(time_to_work_hours) + ":" + str(time_to_work_minutes).zfill(2)  + " hours")
+        else:
+            print(str(time_to_work_minutes).zfill(2)  + " minutes")
 
 
 if __name__ == "__main__":
