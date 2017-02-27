@@ -1,14 +1,12 @@
+import functools
 import json
-import urllib
 import re
 import time
-import functools
+import urllib
 import requests
-import sys
-from house import House, create_house
 from bs4 import BeautifulSoup
-# API key for google maps
 from google_maps_password import GMAPS_PASSWORD
+from house import create_house
 
 # A per week price limit on rentable properties
 PRICE_LIMIT_PER_WEEK = 500
