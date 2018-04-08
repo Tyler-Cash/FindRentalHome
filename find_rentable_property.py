@@ -10,15 +10,16 @@ from house import create_house
 
 # A per week price limit on rentable properties
 PRICE_LIMIT_PER_WEEK = 500
+LOCATION_OF_PROPERTYS = "in-chatswood%2c+nsw+2067%3b+newtown%2c+nsw+2042%3b+surry+hills%2c+nsw+2010%3b+ashfield%2c+nsw+2131%3b+strathfield%2c+nsw+2135%3b+lilyfield%2c+nsw+2040%3b+potts+point%2c+nsw+2011%3b+darlinghurst%2c+nsw+2010%3b+woollahra%2c+nsw+2025%3b+bellevue+hill%2c+nsw+2023%3b+eveleigh%2c+nsw+2015%3b+waterloo%2c+nsw+2017%3b+enmore%2c+nsw+2042%3b+birchgrove%2c+nsw+2041%3b+neutral+bay%2c+nsw+2089%3b+balmoral%2c+nsw+2283%3b+crows+nest%2c+nsw+2065%3b+artarmon%2c+nsw+2064"
 # Constant that determines whether property will allow pets
-PET_ALLOWED = True
+PET_ALLOWED = False
 # Location of work and school
 WORK = "Sydney NSW 2000"
 SCHOOL = "Sydney NSW 2109"
 # WORK_PRIORITY prioritizes properties depending on how close they are to either, school or work.
 # 0 - - - - .5 - - - - 1
-#School    Even       Work
-WORK_PRIORITY = .8
+# School    Even       Work
+WORK_PRIORITY = 1
 
 
 def get_locations_from_realestatecomau(pets_allowed):
@@ -29,9 +30,9 @@ def get_locations_from_realestatecomau(pets_allowed):
     # Total pages is + 1 since iterator starts at 1, not 0
     while page_number < total_pages + 1:
         # Acquires page to be scraped
-        property_search = "http://www.realestate.com.au/rent/between-0-" + str(
-            PRICE_LIMIT_PER_WEEK) + "-in-blacktown%2c+nsw+2148%3b+parramatta+-+greater+region%2c+nsw%3b+newtown%2c+nsw+2042%3b+chullora%2c+nsw+2190%3b+wetherill+park%2c+nsw+2164%3b+baulkham+hills%2c+nsw+2153%3b+oxley+park%2c+nsw+2760%3b+mount+druitt%2c+nsw+2770%3b+penrith+-+greater+region%2c+nsw%3b+sydney+cbd%2c+nsw%3b+sydney%2c+nsw+2000%3b+strathfield%2c+nsw+2135%3b+surry+hills%2c+nsw+2010%3b+hurstville%2c+nsw+2220%3b+padstow%2c+nsw+2211%3b/list-" + str(
-            page_number) + "?activeSort=price-asc"
+        property_search = "https://www.realestate.com.au/rent/between-0-" + \
+                          str(PRICE_LIMIT_PER_WEEK) + "-" + LOCATION_OF_PROPERTYS + "/" + \
+                          str(page_number) + "/list-1?activeSort=price-asc&source=location-search"
         if pets_allowed:
             property_search += "&misc=pets-allowed"
 
@@ -41,9 +42,7 @@ def get_locations_from_realestatecomau(pets_allowed):
 
         # Scapes total pages of properties available
         if page_number is 1:
-            total_results = soup.find("div", {"class": "resultsInfo"})
-            total_results = total_results.encode("utf-8")
-            total_results = total_results.decode("utf-8")
+            total_results = str(soup.find(id="resultsInfo"))
             total_pages = re.findall("\d{1,}", total_results)
             total_pages = int(total_pages[len(total_pages) - 1])
             if total_pages % 20 is not 0:
@@ -55,7 +54,8 @@ def get_locations_from_realestatecomau(pets_allowed):
         available_houses = soup.find_all("article", {"class": "resultBody"})
         # Scrapes all info for each house
         for house in available_houses:
-            url = "http://www.realestate.com.au" + house.find("a", {"class": "detailsButton"}).get("href")
+            url = "http://www.realestate.com.au" + house.find("a", {"class": "detailsButton"}).get(
+                "href")
 
             address = str(house.find("a", {"rel": "listingName"}).contents[0])
 
@@ -90,7 +90,8 @@ def get_place_id(address_name):
     response = None
     while response is None or response['status'] == "OVER_QUERY_LIMIT":
         response = requests.get(
-            "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name + "&key=" + GMAPS_PASSWORD)
+            "https://maps.googleapis.com/maps/api/geocode/json?address=" + address_name +
+            "&project=focused-elysium-177605" + "&key=" + GMAPS_PASSWORD)
         response = json.loads(response.text)
         # Returns None so that all of the properties already found can be sorted correctly.
         if response['status'] == "OVER_QUERY_LIMIT":
@@ -107,11 +108,12 @@ def get_place_id(address_name):
 def time_taken_transit(origin, destination, time):
     response = requests.get(
         "https://maps.googleapis.com/maps/api/directions/json?&mode=transit&arrival_time=" +
-        str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + GMAPS_PASSWORD)
+        str(time) + "&origin=place_id:" + origin + "&destination=place_id:" + destination + "&key="
+        + GMAPS_PASSWORD)
     response = json.loads(response.text)
-    if response["status"] == "ZERO_RESULTS" or response["status"] == "NOT_FOUND":
+    if response['status'] == "ZERO_RESULTS" or response['status'] == "NOT_FOUND":
         return 9999999
-    return response["routes"][0]["legs"][0]["duration"]["value"]
+    return response['routes'][0]['legs'][0]['duration']['value']
 
 
 def compare_houses(house_one, house_two):
@@ -141,7 +143,8 @@ def find_nearest_house():
         property.distance_to_school = time_taken_transit(house, SCHOOL, 1488146400)
 
     # output property closest to school
-    print("___________________________________________________________________\nOutput closest to school:\n")
+    print(
+        "___________________________________________________________________\nOutput closest to school:\n")
     closest_to_school = sorted(rental_properties, key=functools.cmp_to_key(compare_houses))
     print_all_properties(closest_to_school)
 
@@ -160,11 +163,11 @@ def print_all_properties(all_properties):
         time_to_school_minutes = int(time_to_school_minutes % 60)
 
         if time_to_school_hours is not 0 and not invalid_property:
-            print(str(time_to_school_hours) + ":" + str(time_to_school_minutes).zfill(2)  + " hours")
+            print(str(time_to_school_hours) + ":" + str(time_to_school_minutes).zfill(2) + " hours")
         elif invalid_property:
             print("Couldn't find property")
         else:
-            print(str(time_to_school_minutes).zfill(2)  + " minutes")
+            print(str(time_to_school_minutes).zfill(2) + " minutes")
 
         print("Time to work: ", end='')
 
@@ -173,11 +176,11 @@ def print_all_properties(all_properties):
         time_to_work_minutes = int(time_to_work_minutes % 60)
 
         if time_to_work_hours is not 0 and not invalid_property:
-            print(str(time_to_work_hours) + ":" + str(time_to_work_minutes).zfill(2)  + " hours")
+            print(str(time_to_work_hours) + ":" + str(time_to_work_minutes).zfill(2) + " hours")
         elif invalid_property:
             print("Couldn't find property")
         else:
-            print(str(time_to_work_minutes).zfill(2)  + " minutes")
+            print(str(time_to_work_minutes).zfill(2) + " minutes")
 
 
 if __name__ == "__main__":
